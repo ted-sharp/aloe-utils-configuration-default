@@ -8,7 +8,7 @@
 [![License](https://img.shields.io/github/license/ted-sharp/aloe-utils-configuration-default.svg)](LICENSE)
 [![.NET](https://img.shields.io/badge/.NET-9.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/9.0)
 
-`Aloe.Utils.Configuration.Default` is a lightweight utility that provides a standardized way to load configuration files, environment variables, command-line arguments, and development secrets in .NET applications.
+`Aloe.Utils.Configuration.Default` is a lightweight utility that, even when using ConfigurationBuilder on its own, provides the standard loading of configuration files, environment variables, command-line arguments, and development secrets—just as HostBuilder does by default.
 
 ## Main Features
 
@@ -24,7 +24,7 @@
 ## Supported Environments
 
 * .NET 9 and later
-* Used in conjunction with Microsoft.Extensions.Configuration
+* Used in conjunction with Microsoft.Extensions.Configuration.ConfigurationBuilder
 
 ## Install
 
@@ -43,16 +43,13 @@ dotnet add package Aloe.Utils.Configuration.Default
 ## Usage
 
 ```csharp
-using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Configuration;
 using Aloe.Utils.Configuration.Default;
 
-// Create a minimal host builder
-var builder = Host.CreateApplicationBuilder(args);
-
-// Configure with a single line
-builder.Configuration
+// Create a ConfigurationBuilder
+var configurationBuilder = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
+    // Not required when using Host.CreateApplicationBuilder(args) instead of ConfigurationBuilder.
     .AddDefault<Program>(args, reloadOnChange: true);
 
 // Build and use the host
@@ -62,6 +59,32 @@ var config = host.Services.GetRequiredService<IConfiguration>();
 // Access configuration values
 var connectionString = config.GetConnectionString("DefaultConnection");
 var appName = config["Application:Name"];
+```
+
+## Notes
+
+This utility is designed for use with `ConfigurationBuilder` alone, as the Generic Host already loads these items by default.
+When using the Generic Host, these configurations are already loaded by default.
+
+```csharp
+// Web host builder available since ASP.NET Core 2.1
+IWebHostBuilder webHostBuilder2_1 = WebHost.CreateDefaultBuilder(args);
+
+// Generic host builder available since .NET Core 3.0
+// At this time, ASP.NET Core and the interface were not unified, and the writing style was inconsistent
+IHostBuilder hostBuilder3_0 = Microsoft.Extensions.Hosting.Host.CreateDefaultBuilder(args);
+
+// Host builder introduced in .NET 6 for Minimal API
+// ASP.NET Core side's response to interface unification
+WebApplicationBuilder webAppBuilder6 = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
+
+// Generic host builder introduced in .NET 7
+// Interface unification and more consistent writing style
+HostApplicationBuilder hostAppBuilder7 = Microsoft.Extensions.Hosting.Host.CreateApplicationBuilder(args);
+
+// Lighter minimal configuration version added in .NET 8 (preview)
+// For Minimal API
+WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
 ```
 
 ## License

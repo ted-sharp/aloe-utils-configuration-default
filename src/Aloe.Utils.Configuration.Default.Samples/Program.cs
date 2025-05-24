@@ -1,28 +1,22 @@
-﻿using Microsoft.Extensions.Hosting;
+﻿using Aloe.Utils.Configuration.Default;
 using Microsoft.Extensions.Configuration;
-using Aloe.Utils.Configuration.Default;
-using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-// 1. .NET 9以降の最小ホスト ビルダーを作成
-var builder = Host.CreateApplicationBuilder(args);
-
-// 2. ConfigurationManager に対してベースパスと設定ファイルを設定
-builder.Configuration
+// 1. ConfigurationBuilderを作成
+var configurationBuilder = new ConfigurationBuilder()
     .SetBasePath(AppContext.BaseDirectory)
+    // ConfigurationBuilder ではなく Host.CreateApplicationBuilder(args); を使う場合は不要です。
     .AddDefault<Program>(args, reloadOnChange: true);
 
-// 3. ビルドして IHost を生成
-using var host = builder.Build();
+// 2. IConfigurationを構築
+var configuration = configurationBuilder.Build();
 
-// 4. IConfiguration を取得
-var config = host.Services.GetRequiredService<IConfiguration>();
+// 3. 各種設定値を取得
+var defaultConn = configuration.GetConnectionString("DefaultConnection");
+var appName = configuration["Application:Name"];
+var appVersion = configuration["Application:Version"];
 
-// 5. 各種設定値を取得
-var defaultConn = config.GetConnectionString("DefaultConnection");
-var appName = config["Application:Name"];
-var appVersion = config["Application:Version"];
-
-// 6. 出力
+// 4. 出力
 Console.WriteLine("=== Application Settings ===");
 Console.WriteLine($"Name:    {appName}");
 Console.WriteLine($"Version: {appVersion}");
