@@ -63,6 +63,8 @@ var appName = config["Application:Name"];
 
 ## 注意
 
+### 汎用ホストを使う場合は不要
+
 `ConfigurationBuilder` を単独で使う場合を想定しているため、汎用ホストを使う場合は不要です。
 汎用ホストの場合は宣言時に同様の項目がデフォルトで読み込まれています。
 
@@ -86,6 +88,11 @@ HostApplicationBuilder hostAppBuilder7 = Microsoft.Extensions.Hosting.Host.Creat
 // Minimal API向け
 WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
 ```
+
+### `reloadOnChange: true` を設定する場合は1回だけビルドする
+
+`ConfigurationBuilder` では、`reloadOnChange: true` にすると、監視が有効になるため GC で解放されなくなります。
+そのため、読み込む場合はアプリケーションの開始時に一度だけ行います。
 
 ## ライセンス
 

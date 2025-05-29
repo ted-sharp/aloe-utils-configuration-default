@@ -63,6 +63,8 @@ var appName = config["Application:Name"];
 
 ## Notes
 
+### Not Required When Using Generic Host
+
 This utility is designed for use with `ConfigurationBuilder` alone, as the Generic Host already loads these items by default.
 When using the Generic Host, these configurations are already loaded by default.
 
@@ -86,6 +88,11 @@ HostApplicationBuilder hostAppBuilder7 = Microsoft.Extensions.Hosting.Host.Creat
 // For Minimal API
 WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
 ```
+
+### Build Only Once When Using `reloadOnChange: true`
+
+When using `reloadOnChange: true` with `ConfigurationBuilder`, the monitoring becomes active and prevents garbage collection.
+Therefore, if you use this setting, you should only build the configuration once at application startup.
 
 ## License
 
