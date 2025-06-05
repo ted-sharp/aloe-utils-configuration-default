@@ -85,8 +85,8 @@ WebApplicationBuilder webAppBuilder6 = Microsoft.AspNetCore.Builder.WebApplicati
 HostApplicationBuilder hostAppBuilder7 = Microsoft.Extensions.Hosting.Host.CreateApplicationBuilder(args);
 
 // Lighter minimal configuration version added in .NET 8 (preview)
-// For Minimal API
-WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
+// For Minimal APIs, does not load configuration files
+//WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
 ```
 
 ### Build Only Once When Using `reloadOnChange: true`

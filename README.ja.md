@@ -85,8 +85,8 @@ WebApplicationBuilder webAppBuilder6 = Microsoft.AspNetCore.Builder.WebApplicati
 HostApplicationBuilder hostAppBuilder7 = Microsoft.Extensions.Hosting.Host.CreateApplicationBuilder(args);
 
 // .NET 8（プレビュー）で追加された、より軽量な最小構成版
-// Minimal API向け
-WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
+// Minimal API向け、設定ファイルは読み込まない
+//WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
 ```
 
 ### `reloadOnChange: true` を設定する場合は1回だけビルドする
