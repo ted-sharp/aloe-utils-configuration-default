@@ -18,7 +18,6 @@
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<RepositoryUrl>https://github.com/ted-sharp/aloe-utils-configuration-default</RepositoryUrl>
 		<PackageLicenseExpression>MIT</PackageLicenseExpression>
-		<PlatformTarget>x64</PlatformTarget>
 		<Title>Aloe.Utils.Configuration.Default</Title>
 		<PackageProjectUrl>https://github.com/ted-sharp/aloe-utils-configuration-default</PackageProjectUrl>
 		<PackageIcon>Aloe.png</PackageIcon>
