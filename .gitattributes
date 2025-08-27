@@ -1,10 +1,10 @@
 * text=auto
 
 ###### Git
-.gitattributes text
-.gitignore text
-.gitconfig text
-.gitmodules text
+.gitattributes text eol=lf
+.gitignore text eol=lf
+.gitconfig text eol=lf
+.gitmodules text eol=lf
 
 ##### Windows
 *.bat text eol=crlf
@@ -20,13 +20,14 @@
 ##### Global
 # Documents
 *.sql text eol=crlf
-*.md text eol=crlf
+*.md text eol=lf
+*.mdx text eol=lf
 *.adoc text
 *.textile text
 *.mustache text
-*.csv text
-*.tab text
-*.tsv text
+*.csv text eol=crlf
+*.tab text eol=crlf
+*.tsv text eol=crlf
 *.coffee text
 *.css text eol=lf
 *.htm text eol=lf
@@ -192,7 +193,22 @@ Procfile text
 *.resx text eol=crlf
 *.settings text eol=crlf
 *.cs text eol=crlf
+*.xaml text eol=crlf
+*.cshtml text eol=crlf
+*.razor text eol=crlf
 *.vb text eol=crlf
 *.cpp text eol=crlf
 *.h text eol=crlf
 *.fs text eol=crlf
+
+#### Web Development
+.env text eol=lf
+.nvmrc text eol=lf
+
+.prettierrc text eol=lf
+.eslintrc text eol=lf
+.babelrc text eol=lf
+.yarnrc text eol=lf
+
+*.lock text eol=lf
+
