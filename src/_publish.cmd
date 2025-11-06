@@ -17,7 +17,7 @@ dotnet build .\Aloe.Utils.Configuration.Default\Aloe.Utils.Configuration.Default
 
 rem Publish the application
 echo Building and publishing...
-dotnet publish .\Aloe.Utils.Configuration.Default\Aloe.Utils.Configuration.Default.csproj -c Release -r win-x64 -o .\publish\AloeUtilsConfigurationDefault
+dotnet publish .\Aloe.Utils.Configuration.Default\Aloe.Utils.Configuration.Default.csproj -c Release -o .\publish\AloeUtilsConfigurationDefault
 
 rem Create NuGet package
 echo Creating NuGet package...
