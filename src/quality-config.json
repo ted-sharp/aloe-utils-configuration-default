@@ -1,0 +1,56 @@
+{
+  "general": {
+    "maxParallelJobs": 3,
+    "enableCache": true,
+    "cacheDirectory": ".quality-cache",
+    "reportDirectory": "quality-reports"
+  },
+  "sonar": {
+    "url": "http://localhost:9000",
+    "timeout": 300,
+    "skipOnFailure": false,
+    "enableLocalReports": true,
+    "metricsToCollect": [
+      "bugs",
+      "vulnerabilities",
+      "code_smells",
+      "coverage",
+      "duplicated_lines_density",
+      "ncloc",
+      "sqale_index"
+    ]
+  },
+  "resharper": {
+    "cleanupProfile": "Default",
+    "inspectionSeverity": "WARNING",
+    "enableCleanup": true,
+    "enableInspection": true,
+    "customSettingsFile": ""
+  },
+  "dotnetFormat": {
+    "enabled": true,
+    "verbosity": "quiet",
+    "includeGenerated": false
+  },
+  "build": {
+    "configuration": "Release",
+    "verbosity": "quiet",
+    "showTopWarningsCount": 5
+  },
+  "reporting": {
+    "formats": ["json", "xml"],
+    "retentionDays": 30,
+    "generateHtmlReport": false
+  },
+  "cache": {
+    "enabled": true,
+    "hashAlgorithm": "SHA256",
+    "includeProjectFiles": true,
+    "excludePatterns": [
+      "**/obj/**",
+      "**/bin/**",
+      "**/.vs/**",
+      "**/packages/**"
+    ]
+  }
+}
