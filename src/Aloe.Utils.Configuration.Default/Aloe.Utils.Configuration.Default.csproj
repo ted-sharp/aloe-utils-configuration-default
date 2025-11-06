@@ -12,7 +12,7 @@
 	<PropertyGroup>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageId>Aloe.Utils.Configuration.Default</PackageId>
-		<Version>1.0.2</Version>
+		<Version>1.1.0</Version>
 		<Authors>ted-sharp</Authors>
 		<Description>Extension methods for Microsoft.Extensions.Configuration to easily load and manage default configuration files in .NET applications</Description>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
