@@ -1,6 +1,5 @@
 ﻿using Aloe.Utils.Configuration.Default;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
 
 // 1. ConfigurationBuilderを作成
 var configurationBuilder = new ConfigurationBuilder()

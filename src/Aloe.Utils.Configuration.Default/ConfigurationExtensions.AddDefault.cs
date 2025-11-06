@@ -11,7 +11,7 @@ namespace Aloe.Utils.Configuration.Default;
 /// <summary>
 /// ConfigurationBuilderの拡張メソッドを提供します。
 /// </summary>
-public static partial class ConfigurationExtensions
+public static class ConfigurationExtensions
 {
     /// <summary>
     /// IConfigurationBuilder に対して、標準的な設定ファイル・環境変数・コマンドライン引数・
