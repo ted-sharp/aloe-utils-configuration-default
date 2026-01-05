@@ -2,6 +2,7 @@
 // Copyright (c) ted-sharp. All rights reserved.
 // </copyright>
 
+using System.Diagnostics;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
 
@@ -27,36 +28,17 @@ public static class ConfigurationExtensions
     /// 設定ファイルの変更時に自動で再読み込みを行うかどうか。デフォルトは true。
     /// </param>
     /// <returns>構成ソースが追加された構成ビルダー（チェーン呼び出し可能）</returns>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="builder"/> が null の場合にスローされます。
+    /// </exception>
     public static IConfigurationBuilder AddDefault<T>(
         this IConfigurationBuilder builder,
         string[] args,
         bool reloadOnChange = true)
         where T : class
     {
-        var env = GetEnvironmentName();
-
-        // appsettings.json を追加（ベース設定ファイル）
-        _ = builder.AddJsonFile("appsettings.json", optional: true, reloadOnChange);
-
-        // 環境ごとの設定ファイル（例：appsettings.Development.json）を追加
-        if (!String.IsNullOrWhiteSpace(env))
-        {
-            _ = builder.AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange);
-
-            // 開発環境の場合は UserSecrets を追加
-            if (IsDevelopment(env))
-            {
-                _ = builder.AddUserSecrets<T>(reloadOnChange);
-            }
-        }
-
-        // 環境変数（DOTNET_ や ASPNETCORE_ プレフィックスなど）を読み込み
-        _ = builder.AddEnvironmentVariables();
-
-        // コマンドライン引数からの構成を追加
-        _ = builder.AddCommandLine(args ?? Array.Empty<string>());
-
-        return builder;
+        ArgumentNullException.ThrowIfNull(builder);
+        return AddDefaultCore<T>(builder, args, provider: null, reloadOnChange);
     }
 
     /// <summary>
@@ -69,11 +51,14 @@ public static class ConfigurationExtensions
     /// </typeparam>
     /// <param name="builder">構成ビルダーインスタンス</param>
     /// <param name="args">Main メソッドのコマンドライン引数</param>
-    /// <param name="provider">ファイルプロバイダー</param>
+    /// <param name="provider">ファイルプロバイダー（null は許可されません）</param>
     /// <param name="reloadOnChange">
     /// 設定ファイルの変更時に自動で再読み込みを行うかどうか。デフォルトは true。
     /// </param>
     /// <returns>構成ソースが追加された構成ビルダー（チェーン呼び出し可能）</returns>
+    /// <exception cref="ArgumentNullException">
+    /// <paramref name="builder"/> または <paramref name="provider"/> が null の場合にスローされます。
+    /// </exception>
     public static IConfigurationBuilder AddDefault<T>(
         this IConfigurationBuilder builder,
         string[] args,
@@ -81,17 +66,56 @@ public static class ConfigurationExtensions
         bool reloadOnChange = true)
         where T : class
     {
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(provider);
+        return AddDefaultCore<T>(builder, args, provider, reloadOnChange);
+    }
+
+    /// <summary>
+    /// AddDefault メソッドの共通実装です。
+    /// </summary>
+    /// <typeparam name="T">
+    /// UserSecrets を使用する際の識別用型。
+    /// </typeparam>
+    /// <param name="builder">構成ビルダーインスタンス</param>
+    /// <param name="args">Main メソッドのコマンドライン引数</param>
+    /// <param name="provider">ファイルプロバイダー（null の場合はデフォルトのファイルプロバイダーを使用）</param>
+    /// <param name="reloadOnChange">
+    /// 設定ファイルの変更時に自動で再読み込みを行うかどうか。
+    /// </param>
+    /// <returns>構成ソースが追加された構成ビルダー（チェーン呼び出し可能）</returns>
+    private static IConfigurationBuilder AddDefaultCore<T>(
+        IConfigurationBuilder builder,
+        string[] args,
+        IFileProvider? provider,
+        bool reloadOnChange)
+        where T : class
+    {
         // 実行環境名（Development / Staging / Production など）を取得
         // DOTNET_ENVIRONMENT を優先し、なければ ASPNETCORE_ENVIRONMENT を参照
         var env = GetEnvironmentName();
 
         // appsettings.json を追加（ベース設定ファイル）
-        _ = builder.AddJsonFile(provider, "appsettings.json", optional: true, reloadOnChange);
+        if (provider != null)
+        {
+            _ = builder.AddJsonFile(provider, "appsettings.json", optional: true, reloadOnChange);
+        }
+        else
+        {
+            _ = builder.AddJsonFile("appsettings.json", optional: true, reloadOnChange);
+        }
 
         // 環境ごとの設定ファイル（例：appsettings.Development.json）を追加
         if (!String.IsNullOrWhiteSpace(env))
         {
-            _ = builder.AddJsonFile(provider, $"appsettings.{env}.json", optional: true, reloadOnChange);
+            if (provider != null)
+            {
+                _ = builder.AddJsonFile(provider, $"appsettings.{env}.json", optional: true, reloadOnChange);
+            }
+            else
+            {
+                _ = builder.AddJsonFile($"appsettings.{env}.json", optional: true, reloadOnChange);
+            }
 
             // 開発環境の場合は UserSecrets を追加
             if (IsDevelopment(env))
@@ -160,6 +184,9 @@ public static class ConfigurationExtensions
             or PlatformNotSupportedException)
         {
             // UserSecrets の使用条件を満たさない場合は安全にスキップ
+            // デバッグビルド時にはログを出力して問題の特定を容易にする
+            Debug.WriteLine(
+                $"UserSecrets could not be loaded for type {typeof(T).FullName}: {ex.GetType().Name} - {ex.Message}");
         }
 
         return builder;
