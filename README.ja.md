@@ -52,9 +52,8 @@ var configurationBuilder = new ConfigurationBuilder()
     // ConfigurationBuilder ではなく Host.CreateApplicationBuilder(args); を使う場合は不要です。
     .AddDefault<Program>(args, reloadOnChange: true);
 
-// ホストをビルドして使用
-using var host = builder.Build();
-var config = host.Services.GetRequiredService<IConfiguration>();
+// 設定をビルドして使用
+var config = configurationBuilder.Build();
 
 // 設定値にアクセス
 var connectionString = config.GetConnectionString("DefaultConnection");
@@ -84,9 +83,9 @@ WebApplicationBuilder webAppBuilder6 = Microsoft.AspNetCore.Builder.WebApplicati
 // インターフェースが共通化され、ある程度共通で記述できるようになった
 HostApplicationBuilder hostAppBuilder7 = Microsoft.Extensions.Hosting.Host.CreateApplicationBuilder(args);
 
-// .NET 8（プレビュー）で追加された、より軽量な最小構成版
-// Minimal API向け、設定ファイルは読み込まない
-//WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
+// .NET 8 で追加された、より軽量な最小構成版
+// Minimal API/Native AOT向け、設定ファイル（appsettings.json等）は読み込まれるが、一部機能（HTTPS、IIS統合など）は省略
+WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
 ```
 
 ### `reloadOnChange: true` を設定する場合は1回だけビルドする

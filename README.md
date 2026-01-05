@@ -52,9 +52,8 @@ var configurationBuilder = new ConfigurationBuilder()
     // Not required when using Host.CreateApplicationBuilder(args) instead of ConfigurationBuilder.
     .AddDefault<Program>(args, reloadOnChange: true);
 
-// Build and use the host
-using var host = builder.Build();
-var config = host.Services.GetRequiredService<IConfiguration>();
+// Build and use the configuration
+var config = configurationBuilder.Build();
 
 // Access configuration values
 var connectionString = config.GetConnectionString("DefaultConnection");
@@ -84,9 +83,9 @@ WebApplicationBuilder webAppBuilder6 = Microsoft.AspNetCore.Builder.WebApplicati
 // Interface unification and more consistent writing style
 HostApplicationBuilder hostAppBuilder7 = Microsoft.Extensions.Hosting.Host.CreateApplicationBuilder(args);
 
-// Lighter minimal configuration version added in .NET 8 (preview)
-// For Minimal APIs, does not load configuration files
-//WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
+// Lighter minimal configuration version added in .NET 8
+// For Minimal APIs/Native AOT, configuration files (appsettings.json, etc.) are loaded, but some features (HTTPS, IIS integration, etc.) are omitted
+WebApplicationBuilder slimBuilder8 = Microsoft.AspNetCore.Builder.WebApplication.CreateSlimBuilder(args);
 ```
 
 ### Build Only Once When Using `reloadOnChange: true`
