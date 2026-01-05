@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Aloe.Utils.Configuration.Default.Samples/Aloe.Utils.Configuration.Default.Samples.csproj" />
+  <Project Path="Aloe.Utils.Configuration.Default.Tests/Aloe.Utils.Configuration.Default.Tests.csproj" />
+  <Project Path="Aloe.Utils.Configuration.Default/Aloe.Utils.Configuration.Default.csproj" />
+</Solution>
